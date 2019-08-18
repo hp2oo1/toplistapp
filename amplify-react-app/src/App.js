@@ -28,7 +28,9 @@ function App() {
           title2: data2.hotdata2.Data[j].title,
           url: data2.hotdata2.Data[j].url
         });
+        break;
       }
+      break;
     }
     data.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0));
     updateHotdata(data)
