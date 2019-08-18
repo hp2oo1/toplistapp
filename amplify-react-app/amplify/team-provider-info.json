@@ -1,0 +1,14 @@
+{
+    "local": {
+        "awscloudformation": {
+            "AuthRoleName": "toplistapp-local-20190818170756-authRole",
+            "UnauthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-local-20190818170756-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-local-20190818170756-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "toplistapp-local-20190818170756-deployment",
+            "UnauthRoleName": "toplistapp-local-20190818170756-unauthRole",
+            "StackName": "toplistapp-local-20190818170756",
+            "StackId": "arn:aws:cloudformation:eu-west-1:132162403468:stack/toplistapp-local-20190818170756/579e35f0-c1d2-11e9-87a8-06e78b19b516"
+        }
+    }
+}
