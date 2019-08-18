@@ -43,49 +43,49 @@ function App() {
     fetchHotdata()
   }, [])
 
-  function renderItem(item, index) {
-    return (
-      <Anchor>
-        <Link
-          // target="_blank"
-          href={item.url}
-          title={`${index+1} | ${item.title1} Top${item.index} | ${item.title2}`}
-        />
-      </Anchor>
-      // <List.Item style={styles.item}>
-      //   <List.Item.Meta
-      //     title={`${index+1} ${item.title2}`}
-      //     description={`Top ${item.index} ${item.title1}`}
-      //   />
-      // </List.Item>
-    )
-  }
+  // function renderItem(item, index) {
+  //   return (
+  //     <Anchor>
+  //       <Link
+  //         // target="_blank"
+  //         href={item.url}
+  //         title={`${index+1} | ${item.title1} Top${item.index} | ${item.title2}`}
+  //       />
+  //     </Anchor>
+  //     // <List.Item style={styles.item}>
+  //     //   <List.Item.Meta
+  //     //     title={`${index+1} ${item.title2}`}
+  //     //     description={`Top ${item.index} ${item.title1}`}
+  //     //   />
+  //     // </List.Item>
+  //   )
+  // }
 
-  const styles = {
-    container: {padding: 20},
-    input: {marginBottom: 10},
-    item: { textAlign: 'left' },
-    p: { color: '#1890ff' }
-  }
+  // const styles = {
+  //   container: {padding: 20},
+  //   input: {marginBottom: 10},
+  //   item: { textAlign: 'left' },
+  //   p: { color: '#1890ff' }
+  // }
 
   return (
-    <div style={styles.container}>
-      <List
-        dataSource={hotdata}
-        renderItem={renderItem}
-      />
-    </div>
-    // <div className="App">
-    //   {
-    //     hotdata.map((data, index) => (
-    //       <div key={index}>
-    //         <a href={data.url} rel="noopener noreferrer" target="_blank">
-    //           {index+1} Top{data.index}: {data.title2} ({data.title1})
-    //         </a>
-    //       </div>
-    //     ))
-    //   }
+    // <div style={styles.container}>
+    //   <List
+    //     dataSource={hotdata}
+    //     renderItem={renderItem}
+    //   />
     // </div>
+    <div className="App">
+      {
+        hotdata.map((data, index) => (
+          <div key={index}>
+            <a href={data.url} rel="noopener noreferrer" target="_blank">
+              {index+1} Top{data.index}: {data.title2} ({data.title1})
+            </a>
+          </div>
+        ))
+      }
+    </div>
   );
 }
 
