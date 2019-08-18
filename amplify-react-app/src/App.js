@@ -34,7 +34,14 @@ function App() {
       }
       // break;
     }
-    data.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0));
+    //data.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
+    //
+    for(let i = data.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * data.length)
+      const temp = data[i]
+      data[i] = data[j]
+      data[j] = temp
+    }
     updateHotdata(data)
   }
 
