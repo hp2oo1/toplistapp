@@ -4,9 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { API } from 'aws-amplify'
 import './App.css';
 //
-import { List, Anchor } from 'antd'
+import { List } from 'antd'
 import 'antd/dist/antd.css'
-const { Link } = Anchor
 
 function App() {
   // create coins variable and set to empty array
@@ -34,8 +33,7 @@ function App() {
       }
       // break;
     }
-    //data.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
-    //
+    // shuffle
     for(let i = data.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * data.length)
       const temp = data[i]
@@ -50,48 +48,32 @@ function App() {
     fetchHotdata()
   }, [])
 
-  // function renderItem(item, index) {
-  //   return (
-  //     <Anchor>
-  //       <Link
-  //         // target="_blank"
-  //         href={item.url}
-  //         title={`${index+1} | ${item.title1} Top${item.index} | ${item.title2}`}
-  //       />
-  //     </Anchor>
-  //     // <List.Item style={styles.item}>
-  //     //   <List.Item.Meta
-  //     //     title={`${index+1} ${item.title2}`}
-  //     //     description={`Top ${item.index} ${item.title1}`}
-  //     //   />
-  //     // </List.Item>
-  //   )
-  // }
+  function renderItem(item, index) {
+    return (
+      <div>
+        <List.Item style={styles.item}>
+          <List.Item.Meta
+            title={<a href={item.url} target="_blank" rel="noopener noreferrer">{`${index+1} ${item.title2}`}</a>}
+            description={`Top ${item.index} ${item.title1}`}
+          />
+        </List.Item>
+      </div>
+    )
+  }
 
-  // const styles = {
-  //   container: {padding: 20},
-  //   input: {marginBottom: 10},
-  //   item: { textAlign: 'left' },
-  //   p: { color: '#1890ff' }
-  // }
+  const styles = {
+    container: {padding: 20},
+    input: {marginBottom: 10},
+    item: { textAlign: 'left' },
+    p: { color: '#1890ff' }
+  }
 
   return (
-    // <div style={styles.container}>
-    //   <List
-    //     dataSource={hotdata}
-    //     renderItem={renderItem}
-    //   />
-    // </div>
-    <div className="App">
-      {
-        hotdata.map((data, index) => (
-          <div key={index}>
-            <a href={data.url} rel="noopener noreferrer" target="_blank">
-              {index+1} Top{data.index}: {data.title2} ({data.title1})
-            </a>
-          </div>
-        ))
-      }
+    <div style={styles.container}>
+      <List
+        dataSource={hotdata}
+        renderItem={renderItem}
+      />
     </div>
   );
 }
