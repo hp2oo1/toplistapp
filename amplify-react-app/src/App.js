@@ -15,12 +15,12 @@ function App() {
   // define function to all API
   async function fetchHotdata() {
     const data1 = await API.get('hotdata1api', `/hotdata1`)
+
     var data = []
-    var data2
     for (var i in data1.hotdata1.Data)
     {
       var id = data1.hotdata1.Data[i].id
-      data2 = await API.get('hotdata2api', `/hotdata2?id=${id}`)
+      var data2 = await API.get('hotdata2api', `/hotdata2?id=${id}`)
       var index = 0;
       for (var j in data2.hotdata2.Data)
       {
@@ -36,7 +36,7 @@ function App() {
     }
     //data.sort((a,b) => (a.index > b.index) ? 1 : ((b.index > a.index) ? -1 : 0))
     //
-    for(let i = data.length - 1; i > 0; i--){
+    for(let i = data.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * data.length)
       const temp = data[i]
       data[i] = data[j]
