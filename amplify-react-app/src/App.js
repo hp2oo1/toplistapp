@@ -1,20 +1,32 @@
 // import useState and useEffect hooks from React
 import React, { useState, useEffect } from 'react'
 // import the API category from AWS Amplify
-import { API } from 'aws-amplify'
+import { API, Cache } from 'aws-amplify'
 import './App.css';
 //
-import { List } from 'antd'
+import { List, Button } from 'antd'
 import 'antd/dist/antd.css'
 
 function App() {
   // create coins variable and set to empty array
   const [hotdata, updateHotdata] = useState([])
 
+  async function fetchHotdata1() {
+    var data = Cache.getItem("data", { callback: fetchHotdata })
+    // shuffle
+    for(let i = data.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * data.length)
+      const temp = data[i]
+      data[i] = data[j]
+      data[j] = temp
+    }
+    updateHotdata(data)
+  }
+
   // define function to all API
   async function fetchHotdata() {
     const data1 = await API.get('hotdata1api', `/hotdata1`)
-
+    //
     var data = []
     for (var i in data1.hotdata1.Data)
     {
@@ -33,19 +45,12 @@ function App() {
       }
       // break;
     }
-    // shuffle
-    for(let i = data.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * data.length)
-      const temp = data[i]
-      data[i] = data[j]
-      data[j] = temp
-    }
-    updateHotdata(data)
+    Cache.setItem("data", data)
   }
 
   // call fetchCoins function when component loads
   useEffect(() => {
-    fetchHotdata()
+    fetchHotdata1()
   }, [])
 
   function renderItem(item, index) {
@@ -70,6 +75,11 @@ function App() {
 
   return (
     <div style={styles.container}>
+      <Button
+        type="primary"
+        onClick={fetchHotdata}>
+        Get New Data
+      </Button>
       <List
         dataSource={hotdata}
         renderItem={renderItem}
