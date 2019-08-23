@@ -10,6 +10,7 @@ import 'antd/dist/antd.css'
 function App() {
   // create coins variable and set to empty array
   const [hotdata, updateHotdata] = useState([])
+  const [loading, updateLoading] = useState()
 
   async function fetchHotdata1() {
     var data = Cache.getItem("data", { callback: fetchHotdata })
@@ -46,6 +47,8 @@ function App() {
       // break;
     }
     Cache.setItem("data", data)
+    updateHotdata(data)
+    updateLoading(false)
   }
 
   // call fetchCoins function when component loads
@@ -77,7 +80,11 @@ function App() {
     <div style={styles.container}>
       <Button
         type="primary"
-        onClick={fetchHotdata}>
+        loading={loading}
+        onClick={() => {
+          updateLoading(true)
+          fetchHotdata()
+        }}>
         Get New Data
       </Button>
       <List
@@ -85,7 +92,7 @@ function App() {
         renderItem={renderItem}
       />
     </div>
-  );
+  )
 }
 
 export default App
