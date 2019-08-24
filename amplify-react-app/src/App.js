@@ -14,7 +14,12 @@ function App() {
 
   async function fetchHotdata1() {
     var data = Cache.getItem("data", { callback: fetchHotdata })
-    // shuffle
+    updateHotdata(data)
+  }
+
+  // shuffle
+  async function shuffleHotdata() {
+    var data = Cache.getItem("data", { callback: fetchHotdata })
     for(let i = data.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * data.length)
       const temp = data[i]
@@ -46,6 +51,7 @@ function App() {
       }
       // break;
     }
+    //
     Cache.setItem("data", data)
     updateHotdata(data)
     updateLoading(false)
@@ -79,13 +85,19 @@ function App() {
   return (
     <div style={styles.container}>
       <Button
-        type="primary"
+        type="danger"
         loading={loading}
         onClick={() => {
           updateLoading(true)
           fetchHotdata()
         }}>
         Get New Data
+      </Button>
+      &nbsp;
+      <Button
+        type="primary"
+        onClick={shuffleHotdata}>
+        Shuffle
       </Button>
       <List
         dataSource={hotdata}
