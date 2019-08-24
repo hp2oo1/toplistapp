@@ -4,18 +4,13 @@ import React, { useState, useEffect } from 'react'
 import { API, Cache } from 'aws-amplify'
 import './App.css';
 //
-import { List, Button, Menu, Dropdown, Icon } from 'antd'
+import { List, Button } from 'antd'
 import 'antd/dist/antd.css'
 
 function App() {
   // create coins variable and set to empty array
   const [hotdata, updateHotdata] = useState([])
   const [loading, updateLoading] = useState()
-
-  async function fetchHotdataCache() {
-    var data = Cache.getItem("data")
-    updateHotdata(data)
-  }
 
   // shuffle
   async function shuffleHotdata() {
@@ -68,7 +63,6 @@ function App() {
       // break;
     }
     //
-    Cache.clear()
     Cache.setItem("data", data)
     updateHotdata(data)
     updateLoading(false)
@@ -76,7 +70,7 @@ function App() {
 
   // call fetchCoins function when component loads
   useEffect(() => {
-    fetchHotdataCache()
+    fetchHotdata()
   }, [])
 
   function renderItem(item, index) {
@@ -99,19 +93,6 @@ function App() {
     p: { color: '#1890ff' }
   }
 
-  const menu = (
-    <Menu>
-      <Menu.Item
-        onClick={sortByDefault}>
-        Website
-      </Menu.Item>
-      <Menu.Item
-        onClick={sortByRank}>
-        Rank
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <div style={styles.container}>
       <Button
@@ -121,15 +102,26 @@ function App() {
           updateLoading(true)
           fetchHotdata()
         }}>
-        Fetch New Data
+        Fetch
       </Button>
       &nbsp;
-      <Dropdown.Button
+      <Button
         type="primary"
-        overlay={menu}
+        onClick={sortByDefault}>
+        BySite
+      </Button>
+      &nbsp;
+      <Button
+        type="primary"
+        onClick={sortByRank}>
+        ByRank
+      </Button>
+      &nbsp;
+      <Button
+        type="primary"
         onClick={shuffleHotdata}>
         Shuffle
-      </Dropdown.Button>
+      </Button>
       <List
         dataSource={hotdata}
         renderItem={renderItem}
