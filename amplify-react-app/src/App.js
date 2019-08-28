@@ -4,17 +4,15 @@ import React, { useState, useEffect } from 'react'
 import { API, Cache } from 'aws-amplify'
 import './App.css';
 //
-import { List, Button, Layout, Menu, Switch } from 'antd'
+import { List, Button, Layout, Menu, Switch, Drawer } from 'antd'
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
-
-const { Sider } = Layout;
 
 function App() {
   // create coins variable and set to empty array
   const [hotdata, updateHotdata] = useState([])
   const [loading, updateLoading] = useState()
-  const [collapsed, updateCollapsed] = useState()
+  const [visible, updateVisible] = useState(false)
   const [theme, updateTheme] = useState("light")
 
   // shuffle
@@ -110,7 +108,7 @@ function App() {
               updateLoading(true)
               fetchHotdata()
             }}>
-            Fetch Data
+            Fetch
           </Button>
         </Menu.Item>
         <SubMenu title="Sort By">
@@ -130,34 +128,33 @@ function App() {
             Site
           </Menu.Item>
         </SubMenu>
-        <Menu.Item>
-          <Switch
-            checked={theme === 'dark'}
-            onChange={()=>{
-              if (theme === 'dark')
-                updateTheme("light")
-              else
-                updateTheme("dark")
-            }}
-            checkedChildren="Dark"
-            unCheckedChildren="Light"
-          />
+        <Menu.Item
+          onClick={()=>updateVisible(true)}
+        > Drawer
         </Menu.Item>
-
       </Menu>
       <Layout>
-        <Layout>
-          <List dataSource={hotdata} renderItem={renderItem}/>
-        </Layout>
-        <Sider
-          theme={theme}
-          breakpoint="lg"
-          collapsedWidth="0"
-          collapsed={collapsed}
-          onCollapse={updateCollapsed}>
-          Sider
-        </Sider>
+        <List dataSource={hotdata} renderItem={renderItem}/>
       </Layout>
+      <Drawer
+        title="Basic Drawer"
+        placement="right"
+        closable={true}
+        onClose={()=>updateVisible(false)}
+        visible={visible}
+        >
+        <Switch
+          checked={theme === 'dark'}
+          onChange={()=>{
+            if (theme === 'dark')
+              updateTheme("light")
+            else
+              updateTheme("dark")
+          }}
+          checkedChildren="Dark"
+          unCheckedChildren="Light"
+        />
+      </Drawer>
     </div>
   )
 }
