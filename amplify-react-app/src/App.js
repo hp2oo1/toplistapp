@@ -58,6 +58,7 @@ function App() {
           title2: data2.hotdata2.Data[j].title,
           url: data2.hotdata2.Data[j].url
         });
+        updateHotdata(data)
         // break;
       }
       // break;
