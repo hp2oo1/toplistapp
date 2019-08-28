@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { API, Cache } from 'aws-amplify'
 import './App.css';
 //
-import { List, Button, Layout, Menu, Switch, Drawer } from 'antd'
+import { List, Button, Menu, Switch, Drawer } from 'antd'
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
@@ -133,9 +133,7 @@ function App() {
         > Drawer
         </Menu.Item>
       </Menu>
-      <Layout>
-        <List dataSource={hotdata} renderItem={renderItem}/>
-      </Layout>
+      <List dataSource={hotdata} renderItem={renderItem}/>
       <Drawer
         title="Basic Drawer"
         placement="right"
