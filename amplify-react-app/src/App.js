@@ -4,13 +4,17 @@ import React, { useState, useEffect } from 'react'
 import { API, Cache } from 'aws-amplify'
 import './App.css';
 //
-import { List, Button } from 'antd'
+import { List, Button, Layout, Menu } from 'antd'
 import 'antd/dist/antd.css'
+import SubMenu from 'antd/lib/menu/SubMenu';
+
+const { Sider } = Layout;
 
 function App() {
   // create coins variable and set to empty array
   const [hotdata, updateHotdata] = useState([])
   const [loading, updateLoading] = useState()
+  const [collapsed, updateCollapsed] = useState()
 
   // shuffle
   async function shuffleHotdata() {
@@ -58,9 +62,9 @@ function App() {
           title2: data2.hotdata2.Data[j].title,
           url: data2.hotdata2.Data[j].url
         });
-        updateHotdata(data)
         // break;
       }
+      updateHotdata(data)
       // break;
     }
     //
@@ -96,37 +100,52 @@ function App() {
 
   return (
     <div style={styles.container}>
-      <Button
-        type="danger"
-        loading={loading}
-        onClick={() => {
-          updateLoading(true)
-          fetchHotdata()
-        }}>
-        Fetch
-      </Button>
-      &nbsp;
-      <Button
-        type="primary"
-        onClick={sortByDefault}>
-        BySite
-      </Button>
-      &nbsp;
-      <Button
-        type="primary"
-        onClick={sortByRank}>
-        ByRank
-      </Button>
-      &nbsp;
-      <Button
-        type="primary"
-        onClick={shuffleHotdata}>
-        Shuffle
-      </Button>
-      <List
-        dataSource={hotdata}
-        renderItem={renderItem}
-      />
+      <Menu mode="horizontal">
+        <Menu.Item>
+          <Button
+            type="danger"
+            loading={loading}
+            onClick={() => {
+              updateLoading(true)
+              fetchHotdata()
+            }}>
+            Fetch New Data
+          </Button>
+        </Menu.Item>
+        <SubMenu title="Sort By">
+          <Menu.Item
+            type="primary"
+            onClick={shuffleHotdata}>
+            Shuffle
+          </Menu.Item>
+          <Menu.Item
+            type="primary"
+            onClick={sortByRank}>
+            Rank
+          </Menu.Item>
+          <Menu.Item
+            type="primary"
+            onClick={sortByDefault}>
+            Site
+          </Menu.Item>
+        </SubMenu>
+      </Menu>
+      <Layout>
+        <Layout>
+          <List
+            dataSource={hotdata}
+            renderItem={renderItem}
+          />
+        </Layout>
+      <Sider
+        theme="light"
+        breakpoint="lg"
+        collapsedWidth="0"
+        collapsed={collapsed}
+        onCollapse={updateCollapsed}>
+          Sider
+        </Sider>
+      </Layout>
     </div>
   )
 }
