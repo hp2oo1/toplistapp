@@ -177,12 +177,12 @@ function App() {
         </SubMenu>
         <Menu.Item
           onClick={()=>updateVisible(true)}
-        > Drawer
+        > Options
         </Menu.Item>
       </Menu>
       <List dataSource={hotdata} renderItem={renderItem}/>
       <Drawer
-        title="Basic Drawer"
+        title="Options"
         placement="right"
         closable={true}
         onClose={()=>updateVisible(false)}
