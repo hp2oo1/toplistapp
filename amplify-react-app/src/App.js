@@ -8,6 +8,11 @@ import { List, Button, Menu, Switch, Drawer } from 'antd'
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
 
+Cache.configure({
+  capacityInBytes: 5000000,
+  itemMaxSize:     5000000
+})
+
 function App() {
   // create coins variable and set to empty array
   const [hotdata, updateHotdata] = useState([])
@@ -60,15 +65,15 @@ function App() {
     var data = []
     await Promise.all(promises).then(results => {
       let index = -1
-      for (var i in data1.hotdata1.Data)
-      {
+      for (var i in data1.hotdata1.Data) {
         index++
         let rank = 0;
         var data2 = results[index]
-        for (var j in data2.hotdata2.Data)
-        {
+        for (var j in data2.hotdata2.Data) {
+          rank++
+          // if (rank > 20) break
           data.push({
-            rank: ++rank,
+            rank: rank,
             title1: data1.hotdata1.Data[i].title,
             title2: data2.hotdata2.Data[j].title,
             url: data2.hotdata2.Data[j].url
