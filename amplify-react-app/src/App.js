@@ -45,6 +45,8 @@ function App() {
 
   // define function to all API
   async function fetchHotdata() {
+    updateLoading(true)
+    //
     const data1 = await API.get('hotdata1api', `/hotdata1`)
     //
     const promises = []
@@ -112,10 +114,7 @@ function App() {
           <Button
             type="danger"
             loading={loading}
-            onClick={() => {
-              updateLoading(true)
-              fetchHotdata()
-            }}>
+            onClick={fetchHotdata}>
             Fetch
           </Button>
         </Menu.Item>
