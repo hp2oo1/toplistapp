@@ -4,21 +4,37 @@ import React, { useState, useEffect } from 'react'
 import { API, Cache } from 'aws-amplify'
 import './App.css';
 //
-import { List, Button, Menu, Switch, Drawer } from 'antd'
+import {
+  Button,
+  Checkbox,
+  Drawer,
+  List,
+  Menu,
+  Switch
+} from 'antd'
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
+import CheckboxGroup from 'antd/lib/checkbox/Group';
 
 Cache.configure({
   capacityInBytes: 5000000,
   itemMaxSize:     5000000
 })
 
+const defaultCheckedList = ["知乎", "虎扑", "天涯", "知乎日报"]
+
 function App() {
   // create coins variable and set to empty array
+  const [plainOptions, updatePlainOptions] = useState([])
   const [hotdata, updateHotdata] = useState([])
   const [loading, updateLoading] = useState()
   const [visible, updateVisible] = useState(false)
   const [theme, updateTheme] = useState("light")
+  const [state, updateState] = useState({
+    checkedList: defaultCheckedList,
+    indeterminate: true,
+    checkAll: false,
+  })
 
   // shuffle
   async function shuffleHotdata() {
@@ -48,24 +64,42 @@ function App() {
     updateHotdata(data)
   }
 
-  // define function to all API
-  async function fetchHotdata() {
+  async function fetchData() {
     updateLoading(true)
+    //
+    var checkedList = Cache.getItem("checkedList", { callback: () => {
+      return defaultCheckedList
+    }});
     //
     const data1 = await API.get('hotdata1api', `/hotdata1`)
     //
-    const promises = []
+    var siteData = []
+    var options = []
     for (var i in data1.hotdata1.Data) {
+      var title = data1.hotdata1.Data[i].title
+      options.push(title)
+      //
       var id = data1.hotdata1.Data[i].id
+      if(checkedList.includes(title)){
+        siteData.push({
+          id: id,
+          title: title
+        })
+      }
+    }
+    updatePlainOptions(options)
+    //
+    const promises = []
+    for (let item of siteData) {
       promises.push(
-        API.get('hotdata2api', `/hotdata2?id=${id}`)
+        API.get('hotdata2api', `/hotdata2?id=${item.id}`)
       )
     }
     //
     var data = []
     await Promise.all(promises).then(results => {
       let index = -1
-      for (var i in data1.hotdata1.Data) {
+      for (let item of siteData) {
         index++
         let rank = 0;
         var data2 = results[index]
@@ -74,7 +108,7 @@ function App() {
           // if (rank > 20) break
           data.push({
             rank: rank,
-            title1: data1.hotdata1.Data[i].title,
+            title1: item.title,
             title2: data2.hotdata2.Data[j].title,
             url: data2.hotdata2.Data[j].url
           });
@@ -84,12 +118,13 @@ function App() {
     //
     Cache.setItem("data", data)
     updateHotdata(data)
+    //
     updateLoading(false)
   }
 
   // call fetchCoins function when component loads
   useEffect(() => {
-    fetchHotdata()
+    fetchData()
   }, [])
 
   function renderItem(item, index) {
@@ -119,7 +154,7 @@ function App() {
           <Button
             type="danger"
             loading={loading}
-            onClick={fetchHotdata}>
+            onClick={fetchData}>
             Fetch
           </Button>
         </Menu.Item>
@@ -164,6 +199,32 @@ function App() {
           checkedChildren="Dark"
           unCheckedChildren="Light"
         />
+        <Checkbox
+          onChange={e => {
+            updateState({
+              checkedList: e.target.checked ? plainOptions : [],
+              indeterminate: false,
+              checkAll: e.target.checked
+            })
+            //
+            Cache.setItem("checkedList", e.target.checked ? plainOptions : [])
+          }}
+        > CheckAll
+        </Checkbox>
+        <CheckboxGroup
+          options={plainOptions}
+          value={state.checkedList}
+          onChange={checkedList => {
+            updateState({
+              checkedList,
+              indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
+              checkAll: checkedList.length === plainOptions.length
+            })
+            //
+            Cache.setItem("checkedList", checkedList)
+          }}
+        > CheckboxGroup
+        </CheckboxGroup>
       </Drawer>
     </div>
   )
