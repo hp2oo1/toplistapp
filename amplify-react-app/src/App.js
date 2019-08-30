@@ -47,25 +47,33 @@ function App() {
   async function fetchHotdata() {
     const data1 = await API.get('hotdata1api', `/hotdata1`)
     //
-    var data = []
-    for (var i in data1.hotdata1.Data)
-    {
+    const promises = []
+    for (var i in data1.hotdata1.Data) {
       var id = data1.hotdata1.Data[i].id
-      var data2 = await API.get('hotdata2api', `/hotdata2?id=${id}`)
-      var rank = 0;
-      for (var j in data2.hotdata2.Data)
-      {
-        data.push({
-          rank: ++rank,
-          title1: data1.hotdata1.Data[i].title,
-          title2: data2.hotdata2.Data[j].title,
-          url: data2.hotdata2.Data[j].url
-        });
-        // break;
-      }
-      updateHotdata(data)
-      // break;
+      promises.push(
+        API.get('hotdata2api', `/hotdata2?id=${id}`)
+      )
     }
+    //
+    var data = []
+    await Promise.all(promises).then(results => {
+      let index = -1
+      for (var i in data1.hotdata1.Data)
+      {
+        index++
+        let rank = 0;
+        var data2 = results[index]
+        for (var j in data2.hotdata2.Data)
+        {
+          data.push({
+            rank: ++rank,
+            title1: data1.hotdata1.Data[i].title,
+            title2: data2.hotdata2.Data[j].title,
+            url: data2.hotdata2.Data[j].url
+          });
+        }
+      }
+    })
     //
     Cache.setItem("data", data)
     updateHotdata(data)
