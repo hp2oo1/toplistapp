@@ -22,7 +22,7 @@ Cache.configure({
   itemMaxSize:     5000000
 })
 
-const defaultCheckedList = ["知乎", "虎扑", "天涯", "知乎日报"]
+const defaultCheckedList = ["知乎", "天涯", "微信", "微博"]
 
 function App() {
   // create coins variable and set to empty array
