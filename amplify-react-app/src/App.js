@@ -159,8 +159,8 @@ function App() {
           <Button
             type="danger"
             loading={loading}
-            onClick={fetchData}>
-            Fetch
+            onClick={fetchData}
+          >Fetch
           </Button>
         </Menu.Item>
         <SubMenu title="Sort By">
@@ -171,18 +171,18 @@ function App() {
           </Menu.Item>
           <Menu.Item
             type="primary"
-            onClick={sortByRank}>
-            Rank
+            onClick={sortByRank}
+          >Rank
           </Menu.Item>
           <Menu.Item
             type="primary"
-            onClick={sortByDefault}>
-            Site
+            onClick={sortByDefault}
+          >Site
           </Menu.Item>
         </SubMenu>
         <Menu.Item
           onClick={()=>updateVisible(true)}
-        > Options
+        >Options
         </Menu.Item>
       </Menu>
       </Affix>
@@ -194,17 +194,7 @@ function App() {
         onClose={()=>updateVisible(false)}
         visible={visible}
         >
-        <Switch
-          checked={theme === 'dark'}
-          onChange={()=>{
-            if (theme === 'dark')
-              updateTheme("light")
-            else
-              updateTheme("dark")
-          }}
-          checkedChildren="Dark"
-          unCheckedChildren="Light"
-        />
+        <div>
         <Checkbox
           onChange={e => {
             updateState({
@@ -215,8 +205,9 @@ function App() {
             //
             Cache.setItem("checkedList", e.target.checked ? plainOptions : [])
           }}
-        > CheckAll
+        >CheckAll
         </Checkbox>
+        </div>
         <CheckboxGroup
           options={plainOptions}
           value={state.checkedList}
@@ -229,7 +220,7 @@ function App() {
             //
             Cache.setItem("checkedList", checkedList)
           }}
-        > CheckboxGroup
+        >CheckboxGroup
         </CheckboxGroup>
       </Drawer>
     </div>
