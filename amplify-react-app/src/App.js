@@ -88,6 +88,8 @@ function App() {
         })
       }
     }
+    // sort by site name
+    options.sort((x,y)=>x.localeCompare(y, 'zh-CN'))
     updatePlainOptions(options)
     //
     const promises = []
