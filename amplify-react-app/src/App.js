@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { API, Cache } from 'aws-amplify'
 //
 import {
+  Affix,
   Button,
   Checkbox,
   Drawer,
@@ -152,7 +153,8 @@ function App() {
 
   return (
     <div style={styles.container}>
-      <Menu mode="horizontal" theme={theme}>
+      <Affix>
+        <Menu mode="horizontal" theme={theme}>
         <Menu.Item>
           <Button
             type="danger"
@@ -183,6 +185,7 @@ function App() {
         > Options
         </Menu.Item>
       </Menu>
+      </Affix>
       <List dataSource={hotdata} renderItem={renderItem}/>
       <Drawer
         title="Options"
