@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react'
 // import the API category from AWS Amplify
 import { API, Cache } from 'aws-amplify'
-import './App.css';
 //
 import {
   Button,
@@ -15,6 +14,8 @@ import {
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
 import CheckboxGroup from 'antd/lib/checkbox/Group';
+
+import './App.css';
 
 Cache.configure({
   capacityInBytes: 5000000,

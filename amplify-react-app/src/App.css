@@ -31,3 +31,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* Vertical align CheckboxGroup */
+.ant-checkbox-group-item {
+  display: block;
+  margin-right: 0px;
+}
