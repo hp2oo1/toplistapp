@@ -63,7 +63,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "toplistapp-local-20190818170756-deployment",
-					"S3Key": "amplify-builds/toplistfunction-62376857375035556138-build.zip"
+					"S3Key": "amplify-builds/toplistfunction-317238456c6c744d6732-build.zip"
 				}
 			}
 		},

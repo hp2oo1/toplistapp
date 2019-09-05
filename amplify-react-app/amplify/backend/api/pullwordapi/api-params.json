@@ -1,0 +1,34 @@
+{
+    "paths": [
+        {
+            "name": "/pullword",
+            "lambdaFunction": "toplistfunction",
+            "privacy": {
+                "open": true
+            }
+        }
+    ],
+    "resourceName": "pullwordapi",
+    "apiName": "pullwordapi",
+    "functionArns": [
+        {
+            "lambdaFunction": "toplistfunction"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "toplistapp-local-20190818170756-authRole",
+        "unAuthRoleName": "toplistapp-local-20190818170756-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "toplistfunction",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

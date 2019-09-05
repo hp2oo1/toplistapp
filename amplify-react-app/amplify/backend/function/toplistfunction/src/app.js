@@ -64,6 +64,24 @@ app.get('/hotdata2', function(req, res) {
     .catch(err => res.json({ error: err }))
 })
 
+app.get('/pullword', function(req, res) {
+  // define base url
+  let baseUrl = `http://api.pullword.com/get.php`
+  // check if there are any query string parameters, if so the reset the base url to include those
+  if (req.apiGateway && req.apiGateway.event.queryStringParameters) {
+    var apiUrl = req.url.replace(req.baseUrl, baseUrl)
+    apiUrl = apiUrl.replace(req.path, "")
+    apiUrl = apiUrl + "&param1=1&param2=0"
+    apiUrl = decodeURI(unescape(apiUrl))
+  }
+  // call API and return response
+  axios.get(apiUrl, { crossdomain: true })
+    .then(response => {
+      res.json({ keywords: response.data })
+    })
+    .catch(err => res.json({ error: err }))
+})
+
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file

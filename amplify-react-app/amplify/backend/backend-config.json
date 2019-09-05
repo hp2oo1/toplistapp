@@ -34,6 +34,20 @@
 					]
 				}
 			]
+		},
+		"pullwordapi": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "toplistfunction",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
 		}
 	},
 	"hosting": {

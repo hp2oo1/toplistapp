@@ -10,7 +10,6 @@ import {
   Drawer,
   List,
   Menu,
-  Switch
 } from 'antd'
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
@@ -25,13 +24,14 @@ Cache.configure({
 
 const defaultCheckedList = ["知乎", "天涯", "微信", "微博"]
 
+const Promise = require("bluebird")
+
 function App() {
   // create coins variable and set to empty array
   const [plainOptions, updatePlainOptions] = useState([])
   const [hotdata, updateHotdata] = useState([])
   const [loading, updateLoading] = useState()
   const [visible, updateVisible] = useState(false)
-  const [theme, updateTheme] = useState("light")
   const [state, updateState] = useState({
     checkedList: defaultCheckedList,
     indeterminate: true,
@@ -66,6 +66,20 @@ function App() {
     updateHotdata(data)
   }
 
+  function delay(t, data) {
+    return new Promise(resolve => {
+      setTimeout(resolve.bind(null, data), t)
+    })
+  }
+
+  async function runSequence(array, delayT, fn) {
+    for (var item of array) {
+      await fn(item).then(data => {
+        return delay(delayT, data)
+      })
+    }
+  }
+
   async function fetchData() {
     updateLoading(true)
     //
@@ -93,31 +107,39 @@ function App() {
     options.sort((x,y)=>x.localeCompare(y, 'zh-CN'))
     updatePlainOptions(options)
     //
-    const promises = []
-    for (let item of siteData) {
-      promises.push(
-        API.get('hotdata2api', `/hotdata2?id=${item.id}`)
-      )
-    }
-    //
     var data = []
-    await Promise.all(promises).then(results => {
-      let index = -1
-      for (let item of siteData) {
-        index++
-        let rank = 0;
-        var data2 = results[index]
-        for (var j in data2.hotdata2.Data) {
+    await Promise.map(siteData, site => {
+      return API.get('hotdata2api', `/hotdata2?id=${site.id}`)
+    }, { concurrency: 100 })
+    .then(results => {
+      results.forEach((result, i) => {
+        let rank = 0
+        for (var j in result.hotdata2.Data) {
           rank++
-          // if (rank > 20) break
           data.push({
             rank: rank,
-            title1: item.title,
-            title2: data2.hotdata2.Data[j].title,
-            url: data2.hotdata2.Data[j].url
+            title1: siteData[i].title,
+            title2: result.hotdata2.Data[j].title,
+            url: result.hotdata2.Data[j].url,
+            keywords: ""
           });
         }
+      })
+    })
+    //
+    await Promise.map(data, item => {
+      try {
+        return API.get('pullwordapi', `/pullword?source=${decodeURI(unescape(item.title2))}`)
       }
+      catch(error){
+        console.log(error)
+      }
+      return {keywords: ""}
+    }, { concurrency: 100 })
+    .then(results => {
+      results.forEach((result, i) => {
+        data[i].keywords = result.keywords
+      })
     })
     //
     Cache.setItem("data", data)
@@ -137,7 +159,7 @@ function App() {
         <List.Item style={styles.item}>
           <List.Item.Meta
             title={<a href={item.url} target="_blank" rel="noopener noreferrer">{`${index+1} ${item.title2}`}</a>}
-            description={`Top ${item.rank} ${item.title1}`}
+            description={`${item.title1} Top${item.rank} ${item.keywords}`}
           />
         </List.Item>
       </div>
@@ -154,7 +176,7 @@ function App() {
   return (
     <div style={styles.container}>
       <Affix>
-        <Menu mode="horizontal" theme={theme}>
+        <Menu mode="horizontal" theme="light">
         <Menu.Item>
           <Button
             type="danger"
