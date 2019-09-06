@@ -10,6 +10,8 @@ import {
   Drawer,
   List,
   Menu,
+  // Tag,
+  // Tooltip,
 } from 'antd'
 import 'antd/dist/antd.css'
 import SubMenu from 'antd/lib/menu/SubMenu';
@@ -66,20 +68,6 @@ function App() {
     updateHotdata(data)
   }
 
-  function delay(t, data) {
-    return new Promise(resolve => {
-      setTimeout(resolve.bind(null, data), t)
-    })
-  }
-
-  async function runSequence(array, delayT, fn) {
-    for (var item of array) {
-      await fn(item).then(data => {
-        return delay(delayT, data)
-      })
-    }
-  }
-
   async function fetchData() {
     updateLoading(true)
     //
@@ -127,20 +115,20 @@ function App() {
       })
     })
     //
-    await Promise.map(data, item => {
-      try {
-        return API.get('pullwordapi', `/pullword?source=${decodeURI(unescape(item.title2))}`)
-      }
-      catch(error){
-        console.log(error)
-      }
-      return {keywords: ""}
-    }, { concurrency: 100 })
-    .then(results => {
-      results.forEach((result, i) => {
-        data[i].keywords = result.keywords
-      })
-    })
+    // await Promise.map(data, item => {
+    //   try {
+    //     return API.get('pullwordapi', `/pullword?source=${decodeURI(unescape(item.title2))}`)
+    //   }
+    //   catch(error){
+    //     console.log(error)
+    //   }
+    //   return {keywords: ""}
+    // }, { concurrency: 100 })
+    // .then(results => {
+    //   results.forEach((result, i) => {
+    //     data[i].keywords = result.keywords
+    //   })
+    // })
     //
     Cache.setItem("data", data)
     updateHotdata(data)
@@ -162,6 +150,21 @@ function App() {
             description={`${item.title1} Top${item.rank} ${item.keywords}`}
           />
         </List.Item>
+        {/* {item.keywords.split().map((tag, index) => {
+          const isLongTag = tag.length > 20;
+          const tagElem = (
+            <Tag key={tag} closable={index !== 0} onClose={() => this.handleClose(tag)}>
+              {isLongTag ? `${tag.slice(0, 20)}...` : tag}
+            </Tag>
+          );
+          return isLongTag ? (
+            <Tooltip title={tag} key={tag}>
+              {tagElem}
+            </Tooltip>
+          ) : (
+            tagElem
+          );
+        })} */}
       </div>
     )
   }
