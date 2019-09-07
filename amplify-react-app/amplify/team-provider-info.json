@@ -1,14 +1,36 @@
 {
-    "local": {
+    "dev": {
         "awscloudformation": {
-            "AuthRoleName": "toplistapp-local-20190818170756-authRole",
-            "UnauthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-local-20190818170756-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-local-20190818170756-authRole",
+            "AuthRoleName": "toplistapp-dev-20190907140323-authRole",
+            "UnauthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-dev-20190907140323-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-dev-20190907140323-authRole",
             "Region": "eu-west-1",
-            "DeploymentBucketName": "toplistapp-local-20190818170756-deployment",
-            "UnauthRoleName": "toplistapp-local-20190818170756-unauthRole",
-            "StackName": "toplistapp-local-20190818170756",
-            "StackId": "arn:aws:cloudformation:eu-west-1:132162403468:stack/toplistapp-local-20190818170756/579e35f0-c1d2-11e9-87a8-06e78b19b516"
+            "DeploymentBucketName": "toplistapp-dev-20190907140323-deployment",
+            "UnauthRoleName": "toplistapp-dev-20190907140323-unauthRole",
+            "StackName": "toplistapp-dev-20190907140323",
+            "StackId": "arn:aws:cloudformation:eu-west-1:132162403468:stack/toplistapp-dev-20190907140323/e0777150-d16f-11e9-a9a8-0a999da78b84"
+        },
+        "categories": {
+            "function": {
+                "toplistfunction": {}
+            }
+        }
+    },
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "toplistapp-prod-20190907143405-authRole",
+            "UnauthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-prod-20190907143405-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::132162403468:role/toplistapp-prod-20190907143405-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "toplistapp-prod-20190907143405-deployment",
+            "UnauthRoleName": "toplistapp-prod-20190907143405-unauthRole",
+            "StackName": "toplistapp-prod-20190907143405",
+            "StackId": "arn:aws:cloudformation:eu-west-1:132162403468:stack/toplistapp-prod-20190907143405/29eadc60-d174-11e9-8315-06e40231a4dc"
+        },
+        "categories": {
+            "function": {
+                "toplistfunction": {}
+            }
         }
     }
 }
