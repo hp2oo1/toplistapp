@@ -62,7 +62,7 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "toplistapp-local-20190818170756-deployment",
+					"S3Bucket": "toplistapp-dev-20190907140323-deployment",
 					"S3Key": "amplify-builds/toplistfunction-317238456c6c744d6732-build.zip"
 				}
 			}
